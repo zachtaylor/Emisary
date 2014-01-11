@@ -1,4 +1,4 @@
-package org.zachtaylor.emisary.testclasses;
+package org.zachtaylor.emissary.testclasses;
 
 public class CallCounter {
   private int event1Calls, event2Calls;

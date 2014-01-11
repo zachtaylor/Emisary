@@ -1,23 +1,23 @@
-package org.zachtaylor.emisary;
+package org.zachtaylor.emissary;
 
 import java.io.IOException;
 
 import org.eclipse.jetty.websocket.WebSocket;
 import org.json.JSONObject;
-import org.zachtaylor.emisary.event.WebsocketConnectionClose;
-import org.zachtaylor.emisary.event.WebsocketConnectionOpen;
+import org.zachtaylor.emissary.event.WebsocketConnectionClose;
+import org.zachtaylor.emissary.event.WebsocketConnectionOpen;
 
 public class WebsocketConnection implements WebSocket.OnTextMessage {
   private Connection connection;
   private Dispatcher dispatcher;
 
   public void onClose(int arg0, String arg1) {
-    Emisary.post(new WebsocketConnectionClose(this));
+    Emissary.post(new WebsocketConnectionClose(this));
   }
 
   public void onOpen(Connection c) {
     connection = c;
-    Emisary.post(new WebsocketConnectionOpen(this));
+    Emissary.post(new WebsocketConnectionOpen(this));
   }
 
   public void onMessage(String message) {

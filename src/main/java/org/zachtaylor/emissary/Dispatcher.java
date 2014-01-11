@@ -1,4 +1,4 @@
-package org.zachtaylor.emisary;
+package org.zachtaylor.emissary;
 
 import org.json.JSONObject;
 

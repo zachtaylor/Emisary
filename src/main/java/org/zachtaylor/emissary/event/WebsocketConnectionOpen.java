@@ -1,6 +1,6 @@
-package org.zachtaylor.emisary.event;
+package org.zachtaylor.emissary.event;
 
-import org.zachtaylor.emisary.WebsocketConnection;
+import org.zachtaylor.emissary.WebsocketConnection;
 
 public class WebsocketConnectionOpen {
   private final WebsocketConnection websocket;

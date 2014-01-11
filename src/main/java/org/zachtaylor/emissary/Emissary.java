@@ -1,4 +1,4 @@
-package org.zachtaylor.emisary;
+package org.zachtaylor.emissary;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Emisary {
+public class Emissary {
   private static Map<Class<?>, List<Callback>> callbacks = new HashMap<Class<?>, List<Callback>>();
 
   public static void register(Class<?> eventClass, Object object) {
@@ -16,7 +16,7 @@ public class Emisary {
     }
 
     List<Callback> callbackList;
-    synchronized (Emisary.class) {
+    synchronized (Emissary.class) {
       callbackList = callbacks.get(eventClass);
       if (callbackList == null) {
         callbacks.put(eventClass, callbackList = new ArrayList<Callback>());
@@ -35,7 +35,7 @@ public class Emisary {
     }
 
     List<Callback> callbackList;
-    synchronized (Emisary.class) {
+    synchronized (Emissary.class) {
       callbackList = callbacks.get(eventClass);
     }
     if (callbackList == null) {
@@ -51,7 +51,7 @@ public class Emisary {
     Class<?> eventClass = event.getClass();
 
     List<Callback> callbackList;
-    synchronized (Emisary.class) {
+    synchronized (Emissary.class) {
       callbackList = callbacks.get(eventClass);
     }
     if (callbackList == null) {

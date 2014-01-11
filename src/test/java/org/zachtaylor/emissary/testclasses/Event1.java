@@ -1,9 +1,9 @@
-package org.zachtaylor.emisary.testclasses;
+package org.zachtaylor.emissary.testclasses;
 
-public class Event2 {
+public class Event1 {
   private String string;
 
-  public Event2(String s) {
+  public Event1(String s) {
     setString(s);
   }
 
