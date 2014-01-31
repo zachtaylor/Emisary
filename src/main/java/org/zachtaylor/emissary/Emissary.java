@@ -6,10 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Emissary {
-  private static Map<Class<?>, List<Callback>> callbacks = new HashMap<Class<?>, List<Callback>>();
+import org.json.JSONObject;
 
-  public static void register(Class<?> eventClass, Object object) {
+public abstract class Emissary {
+  private static final Map<Class<?>, List<Callback>> callbacks = new HashMap<Class<?>, List<Callback>>();
+
+  public abstract void serve(WebsocketConnection connection, JSONObject json);
+
+  public static final void register(Class<?> eventClass, Object object) {
     Callback callback = getCallback(object, eventClass);
     if (callback == null) {
       return;
@@ -28,7 +32,7 @@ public class Emissary {
     }
   }
 
-  public static void unregister(Class<?> eventClass, Object object) {
+  public static final void unregister(Class<?> eventClass, Object object) {
     Callback callback = getCallback(object, eventClass);
     if (callback == null) {
       return;
@@ -47,7 +51,7 @@ public class Emissary {
     }
   }
 
-  public static void post(Object event) {
+  public static final void post(Object event) {
     Class<?> eventClass = event.getClass();
 
     List<Callback> callbackList;

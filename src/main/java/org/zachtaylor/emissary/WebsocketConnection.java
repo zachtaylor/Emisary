@@ -8,8 +8,9 @@ import org.zachtaylor.emissary.event.WebsocketConnectionClose;
 import org.zachtaylor.emissary.event.WebsocketConnectionOpen;
 
 public class WebsocketConnection implements WebSocket.OnTextMessage {
-  private Connection connection;
-  private Dispatcher dispatcher;
+  protected String name;
+  protected Connection connection;
+  protected Emissary emissary;
 
   public void onClose(int arg0, String arg1) {
     Emissary.post(new WebsocketConnectionClose(this));
@@ -22,15 +23,23 @@ public class WebsocketConnection implements WebSocket.OnTextMessage {
 
   public void onMessage(String message) {
     JSONObject json = new JSONObject(message);
-    getDispatcher().dispatch(this, json);
+    getEmissary().serve(this, json);
   }
 
-  public Dispatcher getDispatcher() {
-    return dispatcher;
+  public String getName() {
+    return name;
   }
 
-  public WebsocketConnection setDispatcher(Dispatcher d) {
-    dispatcher = d;
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public Emissary getEmissary() {
+    return emissary;
+  }
+
+  public WebsocketConnection setEmissary(Emissary e) {
+    emissary = e;
     return this;
   }
 
