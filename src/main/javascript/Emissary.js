@@ -2,17 +2,23 @@
   var controllers = {},
       views = {};
 
+  Emissary.controllerRoot = 'js/';
+  Emissary.viewRoot = 'html/';
+
   Emissary.getController = function(name) {
     return controllers[name] || Emissary.loadController(name);
   };
 
   Emissary.loadController = function(name) {
-    var url = (Emissary.controllerRoot || 'js/') + name.replace('.', '/') + '.js';
+    var url = Emissary.controllerRoot + name.replace(/\./g, '/') + '.js';
 
     $.ajax({
       url : url,
       dataType: 'script',
-      async: false
+      async: false,
+      error: function(jqXhr, textStatus, error) {
+        console.log(error);
+      }
     });
 
     return controllers[name];
@@ -68,16 +74,20 @@
   };
 
   Emissary.loadView = function(name) {
-    var url = (Emissary.viewRoot || 'html/') + name.replace('.', '/') + (Emissary.viewExtension || '.html');
+    var url = Emissary.viewRoot + name.replace(/\./g, '/') + '.html';
 
     $.ajax({
       url : url,
       async : false,
       success : function(data) {
         views[name] = data;
+      },
+      error: function(jqXhr, textStatus, error) {
+        console.log(error);
       }
     });
 
     return views[name];
   };
+
 })(window.Emissary = window.Emissary || {});
