@@ -11,7 +11,10 @@ public class DispatchEmissary extends Emissary {
   @Override
   public void serve(WebsocketConnection connection, JSONObject json) {
     Emissary service = getEmissary(json.getString("service"));
-    service.serve(connection, json);
+
+    if (service != null) {
+      service.serve(connection, json);
+    }
   }
 
   public DispatchEmissary putEmissary(String name, Emissary service) {
