@@ -9,77 +9,76 @@ import java.util.Map;
 import org.json.JSONObject;
 
 public abstract class Emissary {
-  private static final Map<Class<?>, List<Callback>> callbacks = new HashMap<Class<?>, List<Callback>>();
+	private static final Map<Class<?>, List<Callback>> callbacks = new HashMap<Class<?>, List<Callback>>();
 
-  public abstract void serve(WebsocketConnection connection, JSONObject json);
+	public abstract void serve(WebsocketConnection connection, JSONObject json);
 
-  public static final void register(Class<?> eventClass, Object object) {
-    Callback callback = getCallback(object, eventClass);
-    if (callback == null) {
-      return;
-    }
+	public static final void register(Class<?> eventClass, Object object) {
+		Callback callback = getCallback(object, eventClass);
+		if (callback == null) {
+			return;
+		}
 
-    List<Callback> callbackList;
-    synchronized (Emissary.class) {
-      callbackList = callbacks.get(eventClass);
-      if (callbackList == null) {
-        callbacks.put(eventClass, callbackList = new ArrayList<Callback>());
-      }
-    }
+		List<Callback> callbackList;
+		synchronized (Emissary.class) {
+			callbackList = callbacks.get(eventClass);
+			if (callbackList == null) {
+				callbacks.put(eventClass, callbackList = new ArrayList<Callback>());
+			}
+		}
 
-    synchronized (callbackList) {
-      callbackList.add(callback);
-    }
-  }
+		synchronized (callbackList) {
+			callbackList.add(callback);
+		}
+	}
 
-  public static final void unregister(Class<?> eventClass, Object object) {
-    Callback callback = getCallback(object, eventClass);
-    if (callback == null) {
-      return;
-    }
+	public static final void unregister(Class<?> eventClass, Object object) {
+		Callback callback = getCallback(object, eventClass);
+		if (callback == null) {
+			return;
+		}
 
-    List<Callback> callbackList;
-    synchronized (Emissary.class) {
-      callbackList = callbacks.get(eventClass);
-    }
-    if (callbackList == null) {
-      return;
-    }
+		List<Callback> callbackList;
+		synchronized (Emissary.class) {
+			callbackList = callbacks.get(eventClass);
+		}
+		if (callbackList == null) {
+			return;
+		}
 
-    synchronized (callbackList) {
-      callbackList.remove(callback);
-    }
-  }
+		synchronized (callbackList) {
+			callbackList.remove(callback);
+		}
+	}
 
-  public static final void post(Object event) {
-    Class<?> eventClass = event.getClass();
+	public static final void post(Object event) {
+		Class<?> eventClass = event.getClass();
 
-    List<Callback> callbackList;
-    synchronized (Emissary.class) {
-      callbackList = callbacks.get(eventClass);
-    }
-    if (callbackList == null) {
-      return;
-    }
+		List<Callback> callbackList;
+		synchronized (Emissary.class) {
+			callbackList = callbacks.get(eventClass);
+		}
+		if (callbackList == null) {
+			return;
+		}
 
-    synchronized (callbackList) {
-      for (Callback callback : callbackList) {
-        callback.call(event);
-      }
-    }
-  }
+		synchronized (callbackList) {
+			for (Callback callback : callbackList) {
+				callback.call(event);
+			}
+		}
+	}
 
-  private static Callback getCallback(Object context, Class<?> eventClass) {
-    Callback callback = null;
+	private static Callback getCallback(Object context, Class<?> eventClass) {
+		Callback callback = null;
 
-    try {
-      Method method = context.getClass().getMethod("call", eventClass);
-      callback = new Callback(context, method);
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-    }
+		try {
+			Method method = context.getClass().getMethod("call", eventClass);
+			callback = new Callback(context, method);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-    return callback;
-  }
+		return callback;
+	}
 }

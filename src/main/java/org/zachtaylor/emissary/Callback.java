@@ -3,43 +3,42 @@ package org.zachtaylor.emissary;
 import java.lang.reflect.Method;
 
 public class Callback {
-  public Callback(Object context, Method method) {
-    this.context = context;
-    this.method = method;
-  }
+	private final Method method;
+	private final Object context;
 
-  public void call(Object... arguments) {
-    try {
-      method.invoke(context, arguments);
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
+	public Callback(Object context, Method method) {
+		this.context = context;
+		this.method = method;
+	}
 
-  public Method getMethod() {
-    return method;
-  }
+	public void call(Object... arguments) {
+		try {
+			method.invoke(context, arguments);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-  public Object getContext() {
-    return context;
-  }
+	public Method getMethod() {
+		return method;
+	}
 
-  @Override
-  public int hashCode() {
-    return context.hashCode();
-  }
+	public Object getContext() {
+		return context;
+	}
 
-  @Override
-  public boolean equals(Object o) {
-    if (!(o instanceof Callback)) {
-      return false;
-    }
+	@Override
+	public int hashCode() {
+		return context.hashCode();
+	}
 
-    Callback cb = (Callback) o;
-    return context == cb.context && method.equals(cb.method);
-  }
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Callback)) {
+			return false;
+		}
 
-  private final Method method;
-  private final Object context;
+		Callback cb = (Callback) o;
+		return context == cb.context && method.equals(cb.method);
+	}
 }
