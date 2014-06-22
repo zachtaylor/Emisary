@@ -3,6 +3,7 @@ package org.zachtaylor.emissary;
 import java.io.IOException;
 
 import org.eclipse.jetty.websocket.WebSocket;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.zachtaylor.emissary.event.WebsocketConnectionClose;
 import org.zachtaylor.emissary.event.WebsocketConnectionOpen;
@@ -23,7 +24,12 @@ public class WebsocketConnection implements WebSocket.OnTextMessage {
 
 	public void onMessage(String message) {
 		JSONObject json = new JSONObject(message);
-		getEmissary().serve(this, json);
+
+		try {
+			getEmissary().serve(this, json);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public String getName() {

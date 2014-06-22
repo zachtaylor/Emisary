@@ -52,11 +52,9 @@ public abstract class Emissary {
 	}
 
 	public static final void post(Object event) {
-		Class<?> eventClass = event.getClass();
-
 		List<Callback> callbackList;
 		synchronized (Emissary.class) {
-			callbackList = callbacks.get(eventClass);
+			callbackList = callbacks.get(event.getClass());
 		}
 		if (callbackList == null) {
 			return;
@@ -73,7 +71,7 @@ public abstract class Emissary {
 		Callback callback = null;
 
 		try {
-			Method method = context.getClass().getMethod("call", eventClass);
+      Method method = context.getClass().getMethod("handle", eventClass);
 			callback = new Callback(context, method);
 		} catch (Exception e) {
 			e.printStackTrace();
